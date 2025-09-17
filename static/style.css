@@ -1,0 +1,160 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-container {
+    width: 800px;
+    height: 600px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-header {
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.chat-header h1 {
+    margin-bottom: 5px;
+    font-size: 24px;
+}
+
+.chat-header p {
+    opacity: 0.8;
+    font-size: 14px;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f8f9fa;
+}
+
+.message {
+    margin-bottom: 15px;
+    display: flex;
+}
+
+.user-message {
+    justify-content: flex-end;
+}
+
+.bot-message {
+    justify-content: flex-start;
+}
+
+.message-content {
+    max-width: 70%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    line-height: 1.4;
+}
+
+.user-message .message-content {
+    background: #007bff;
+    color: white;
+}
+
+.bot-message .message-content {
+    background: #e9ecef;
+    color: #333;
+}
+
+.chat-input-container {
+    display: flex;
+    padding: 20px;
+    background: white;
+    border-top: 1px solid #e9ecef;
+}
+
+#messageInput {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+    font-size: 14px;
+}
+
+#messageInput:focus {
+    border-color: #007bff;
+}
+
+#sendButton {
+    margin-left: 10px;
+    padding: 12px 24px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+#sendButton:hover {
+    background: #0056b3;
+}
+
+#sendButton:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.typing-indicator {
+    display: none;
+    padding: 12px 16px;
+    background: #e9ecef;
+    border-radius: 18px;
+    max-width: 70%;
+}
+
+.typing-dots {
+    display: flex;
+    align-items: center;
+}
+
+.typing-dots span {
+    height: 8px;
+    width: 8px;
+    background: #999;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-10px);
+    }
+}

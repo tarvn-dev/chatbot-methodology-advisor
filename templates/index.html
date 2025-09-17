@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Methodology Advisor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>Project Methodology Advisor</h1>
+            <p>Get AI-powered recommendations for your project management approach</p>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                <div class="message-content">
+                    Hello! I'm here to help you choose the best project management methodology. 
+                    Tell me about your project - team size, timeline, complexity, etc.
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-input-container">
+            <input type="text" id="messageInput" placeholder="Describe your project..." />
+            <button id="sendButton">Send</button>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
