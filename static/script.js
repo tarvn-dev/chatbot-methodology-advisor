@@ -74,6 +74,8 @@ async function sendMessage() {
     // Disable input
     sendButton.disabled = true;
     messageInput.disabled = true;
+    
+    // Show typing indicator
     showTyping();
     
     try {
@@ -87,6 +89,8 @@ async function sendMessage() {
         });
         
         const data = await response.json();
+        
+        // Hide typing before showing response
         hideTyping();
         
         if (data.status === 'success') {
