@@ -84,11 +84,37 @@ async function sendMessage() {
     messageInput.focus();
 }
 
+// Reset conversation
+async function resetConversation() {
+    try {
+        await fetch('/reset', { method: 'POST' });
+        chatMessages.innerHTML = `
+            <div class="message bot-message">
+                <div class="message-content">
+                    Hello! I'm here to help you choose the best project management methodology. 
+                    Tell me about your project - team size, timeline, complexity, etc.
+                </div>
+            </div>
+        `;
+        messageInput.focus();
+    } catch (error) {
+        console.error('Reset failed:', error);
+    }
+}
+
 // Event listeners
 sendButton.addEventListener('click', sendMessage);
 messageInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         sendMessage();
+    }
+});
+
+// Add keyboard shortcut for reset (Ctrl+R)
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'r') {
+        e.preventDefault();
+        resetConversation();
     }
 });
 
