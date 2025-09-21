@@ -2,13 +2,15 @@ const chatMessages = document.getElementById('chatMessages');
 const messageInput = document.getElementById('messageInput');
 const sendButton = document.getElementById('sendButton');
 
+let isTyping = false;
+
 // Add message to chat
-function addMessage(content, isUser = false) {
+function addMessage(content, isUser = false, isError = false) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
     
     const contentDiv = document.createElement('div');
-    contentDiv.className = 'message-content';
+    contentDiv.className = `message-content ${isError ? 'error-message' : ''}`;
     contentDiv.textContent = content;
     
     messageDiv.appendChild(contentDiv);
@@ -18,6 +20,9 @@ function addMessage(content, isUser = false) {
 
 // Show typing indicator
 function showTyping() {
+    if (isTyping) return;
+    isTyping = true;
+    
     const typingDiv = document.createElement('div');
     typingDiv.className = 'message bot-message';
     typingDiv.id = 'typing-indicator';
@@ -37,12 +42,30 @@ function hideTyping() {
     if (typing) {
         typing.remove();
     }
+    isTyping = false;
+}
+
+// Validate message
+function validateMessage(message) {
+    if (!message.trim()) {
+        return 'Please enter a message';
+    }
+    if (message.length > 1000) {
+        return 'Message too long. Please keep under 1000 characters.';
+    }
+    return null;
 }
 
 // Send message to backend
 async function sendMessage() {
     const message = messageInput.value.trim();
-    if (!message) return;
+    
+    // Validate input
+    const validationError = validateMessage(message);
+    if (validationError) {
+        addMessage(validationError, false, true);
+        return;
+    }
     
     // Add user message
     addMessage(message, true);
@@ -51,8 +74,6 @@ async function sendMessage() {
     // Disable input
     sendButton.disabled = true;
     messageInput.disabled = true;
-    
-    // Show typing
     showTyping();
     
     try {
@@ -61,21 +82,26 @@ async function sendMessage() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ message: message })
+            body: JSON.stringify({ message: message }),
+            timeout: 35000
         });
         
         const data = await response.json();
-        
         hideTyping();
         
         if (data.status === 'success') {
             addMessage(data.response);
         } else {
-            addMessage('Sorry, something went wrong. Please try again.');
+            addMessage(data.error || 'Something went wrong. Please try again.', false, true);
         }
     } catch (error) {
         hideTyping();
-        addMessage('Connection error. Please check your internet and try again.');
+        
+        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+            addMessage('Connection error. Please check your internet and try again.', false, true);
+        } else {
+            addMessage('Request failed. Please try again.', false, true);
+        }
     }
     
     // Re-enable input
@@ -98,23 +124,34 @@ async function resetConversation() {
         `;
         messageInput.focus();
     } catch (error) {
-        console.error('Reset failed:', error);
+        addMessage('Failed to reset conversation. Please refresh the page.', false, true);
     }
 }
 
 // Event listeners
 sendButton.addEventListener('click', sendMessage);
 messageInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
         sendMessage();
     }
 });
 
-// Add keyboard shortcut for reset (Ctrl+R)
+// Keyboard shortcuts
 document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === 'r') {
         e.preventDefault();
         resetConversation();
+    }
+});
+
+// Auto-resize input and character counter
+messageInput.addEventListener('input', (e) => {
+    const length = e.target.value.length;
+    if (length > 900) {
+        e.target.style.borderColor = '#ff6b6b';
+    } else {
+        e.target.style.borderColor = '#ddd';
     }
 });
 

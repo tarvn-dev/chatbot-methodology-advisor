@@ -174,3 +174,40 @@ body {
 #resetButton:hover {
     background: rgba(255, 255, 255, 0.3);
 }
+
+.error-message {
+    background: #f8d7da !important;
+    color: #721c24 !important;
+    border: 1px solid #f5c6cb;
+}
+
+.message-content {
+    word-wrap: break-word;
+    max-width: 70%;
+}
+
+@media (max-width: 768px) {
+    .chat-container {
+        width: 95%;
+        height: 90vh;
+        margin: 5vh auto;
+    }
+    
+    .message-content {
+        max-width: 85%;
+    }
+}
+
+/* Improved accessibility */
+button:focus,
+input:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Loading state for send button */
+#sendButton:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
