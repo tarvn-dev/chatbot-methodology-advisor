@@ -150,3 +150,6 @@ def health_check():
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
+
+# Note: The following function/code snippet/lines was/were generated with the assistance of AI tools.
+# I have thoroughly reviewed the code and confirm that I understand its logic, can explain its behaviour, and am capable of modifying it as needed.

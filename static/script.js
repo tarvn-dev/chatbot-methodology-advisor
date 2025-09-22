@@ -161,3 +161,4 @@ messageInput.addEventListener('input', (e) => {
 
 // Focus input on load
 messageInput.focus();
+
